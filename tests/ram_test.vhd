@@ -9,7 +9,7 @@ end ram_test;
 
 architecture ram_test_arch of ram_test is
 
-  signal address_test: std_logic_vector(32-1 downto 0);
+  signal address_test: std_logic_vector(20-1 downto 0);
   signal data_in_test: std_logic_vector(32-1 downto 0);
   signal data_out_test: std_logic_vector(32-1 downto 0);
   signal we_test: std_logic;
@@ -44,9 +44,9 @@ begin
   is_sixteen_test <= '1';
   re_test <= '1';
   we_test <= '0';
-  address_test <= "00000000000000000000000000000001";
+  address_test <= "00000000000000000001";
   wait for 10 ns;
-  assert (data_out_test = "1000100010001000") report "didn't reset correctly" severity error;
+  assert (data_out_test = "00000000000000001000100010001000") report "didn't reset correctly" severity error;
 
   report "Finish";
 

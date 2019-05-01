@@ -7,7 +7,7 @@ library ieee;
 
 
 entity ram is
-  generic (address_line: Integer := 32; ram_width: Integer := 16);
+  generic (address_line: Integer := 20; ram_width: Integer := 16);
   port (
     clk: in std_logic;
     we: in std_logic;
@@ -25,7 +25,7 @@ architecture ram_wiring of ram is
 
 
   subtype word_t is std_logic_vector(ram_width - 1 downto 0);
-  type    ram_t  is array( (2**address_line) - 1 downto 0) of word_t;
+  type    ram_t  is array( 0 to (2**address_line) - 1) of word_t;
 
   -- file input_ram : text;
 
@@ -73,7 +73,7 @@ architecture ram_wiring of ram is
     return Result;
   end function;
 
-  signal ram_data: ram_t := ocram_ReadMemFile("ram.txt");
+  signal RamData: ram_t := ocram_ReadMemFile("ram.txt"); --(others => (others=>'0'));
 
 begin
 
@@ -86,22 +86,20 @@ begin
       -- Writing to memory
       if we = '1' then
         if is_sixteen = '1' then
-          ram_data(to_integer(unsigned(address))) <= data_in(16-1 downto 0);
+          RamData(to_integer(unsigned(address))) <= data_in(16-1 downto 0);
         else
-          ram_data(to_integer(unsigned(address))) <= data_in(16-1 downto 0);
-          ram_data(to_integer(unsigned(address)) + 1) <= data_in(32-1 downto 16);
+          RamData(to_integer(unsigned(address))) <= data_in(16-1 downto 0);
+          RamData(to_integer(unsigned(address)) + 1) <= data_in(32-1 downto 16);
         end if;
       end if;
       -- Reading from memory
       if re = '1' and we = '0' then
         if is_sixteen = '1' then 
-          write(l, ram_data(0));
-          writeline(output, l);
-          data_out(16-1 downto 0) <= ram_data(to_integer(=(address)));
+          data_out(16-1 downto 0) <= RamData(to_integer(unsigned(address)));
           data_out(32-1 downto 16) <= (others => '0');
         else
-          data_out(16-1 downto 0) <= ram_data(to_integer(unsigned(address)));
-          data_out(32-1 downto 16) <= ram_data(to_integer(unsigned(address)) +1);
+          data_out(16-1 downto 0) <= RamData(to_integer(unsigned(address)));
+          data_out(32-1 downto 16) <= RamData(to_integer(unsigned(address)) +1);
         end if;
       end if;
     end if;
