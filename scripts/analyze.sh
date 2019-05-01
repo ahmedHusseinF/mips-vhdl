@@ -3,8 +3,14 @@
 
 for FILE in src/*.vhd
 do
-  ghdl -a $FILE
+  ghdl -a --std=08 --ieee=synopsys $FILE
   echo "Analyzed $FILE successfully"
 done
 
-echo 'Analyzed all src files successfully'
+for FILE in tests/*.vhd
+do
+  ghdl -a --std=08 --ieee=synopsys $FILE
+  echo "Analyzed $FILE successfully"
+done
+
+echo 'Analyzed all src/ and tests/ files successfully\n'
