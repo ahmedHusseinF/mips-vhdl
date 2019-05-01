@@ -1,5 +1,5 @@
-const readline = require("readline");
-const fs = require("fs");
+const { createInterface } = require("readline");
+const { createReadStream, writeFileSync } = require("fs");
 
 function hex2bin(num) {
   const x = parseInt(num, 16);
@@ -9,12 +9,13 @@ function hex2bin(num) {
 
 const filename = process.argv[2] || "test.asm";
 
-const rl = readline.createInterface(fs.createReadStream(filename));
+const rl = createInterface(createReadStream(filename));
 
 /** @type {Map<string, string>} */
 const cmdMap = new Map();
 
-const commands = {};
+/** @type {string[]} */
+const commands = [];
 
 rl.on("line", line => {
   const parts = line.split("#");
@@ -24,12 +25,20 @@ rl.on("line", line => {
     return;
   }
   console.log(cmd);
+  commands.push(cmd);
 });
 
 let str = "";
 
-/* for (let i = 0; i < 2 ** 32 - 1; i++) {
+rl.on("close", () => {
+  for (let i = 0; i < commands.length; i++) {
+    const parts = commands[i].split(" ");
+    const cmd = parts[0].toLowerCase();
+  }
+});
+
+/* for (let i = 0; i < 2 ** 20 - 1; i++) {
   str += "1000100010001000\n";
 } */
 
-fs.writeFileSync("ram.txt", str);
+// writeFileSync("ram.txt", str);

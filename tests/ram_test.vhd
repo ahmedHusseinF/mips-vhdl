@@ -44,9 +44,20 @@ begin
   is_sixteen_test <= '1';
   re_test <= '1';
   we_test <= '0';
-  address_test <= "00000000000000000001";
+  address_test <= x"00001";
+
   wait for 10 ns;
-  assert (data_out_test = "00000000000000001000100010001000") report "didn't reset correctly" severity error;
+  assert (data_out_test = x"00008888") report "got memory address 1 incorrectly" severity error;
+
+  address_test <= x"00000";
+  wait for 10 ns;
+  assert (data_out_test = x"0000FFFF") report "got memory address 0 incorrectly" severity error;
+
+  is_sixteen_test <= '0';
+  address_test <= x"00000";
+  wait for 10 ns;
+  assert (data_out_test = x"8888FFFF") report "got memory address 0 with 32 bit incorrectly" severity error;
+
 
   report "Finish";
 
