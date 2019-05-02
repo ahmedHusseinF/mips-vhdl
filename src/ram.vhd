@@ -31,7 +31,6 @@ architecture ram_wiring of ram is
   impure function ocram_ReadMemFile(FileName : string) return ram_t is
     file FileHandle       : text open read_mode is FileName;
     variable CurrentLine  : line;
-    -- variable TempWord     : STD_LOGIC_VECTOR((div_ceil(ram_width'length, 4) * 4) - 1 downto 0);
     variable Result       : ram_t := (others => (others => '0'));
     variable l: line;
   begin
@@ -42,7 +41,6 @@ architecture ram_wiring of ram is
       
       readline(FileHandle, CurrentLine);
       read(CurrentLine, Result(i));
-      -- Result(i) := resize(TempWord, ram_width'length);
     end loop;
   
     return Result;
@@ -59,7 +57,7 @@ begin
   variable l: line;
   begin
     if rising_edge(clk) then
-      -- Writing to memory
+      -- Writing to memory on rising_edge
       if we = '1' then
         if is_sixteen = '1' then
           RamData(to_integer(unsigned(address))) <= data_in(16-1 downto 0);
@@ -68,8 +66,11 @@ begin
           RamData(to_integer(unsigned(address)) + 1) <= data_in(32-1 downto 16);
         end if;
       end if;
-      -- Reading from memory
-      if re = '1' and we = '0' then
+    end if;
+
+	if falling_edge(clk) then
+		-- Reading from memory on falling edge
+		if re = '1' then
         if is_sixteen = '1' then 
           data_out(16-1 downto 0) <= RamData(to_integer(unsigned(address)));
           data_out(32-1 downto 16) <= (others => '0');
@@ -78,7 +79,7 @@ begin
           data_out(32-1 downto 16) <= RamData(to_integer(unsigned(address)) +1);
         end if;
       end if;
-    end if;
+	end if;
   end process; -- ram_proc
 
 end architecture;
