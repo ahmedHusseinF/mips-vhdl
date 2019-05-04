@@ -3,7 +3,6 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity ram_test is
-  generic (n: integer := 16);
 end ram_test;
 
 
@@ -30,9 +29,9 @@ begin
   -- ClockWork, normally period is 10ns
   process
   begin
-    clk_test <= '0';
-    wait for 5 ns;
     clk_test <= '1';
+    wait for 5 ns;
+    clk_test <= '0';
     wait for 5 ns;
   end process;
 
