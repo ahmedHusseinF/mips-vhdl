@@ -29,3 +29,5 @@ vsim.dbg
 
 *.vcd
 *.xml
+.vscode
+~$*
