@@ -1,0 +1,72 @@
+vsim -gui work.pc
+# vsim -gui work.pc 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.pc(archi)
+# Loading work.my_nadder_pc_sp(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# Loading work.mux8x1_pc(arch)
+# Loading work.mux4x1_pc_sp(archit)
+# Loading work.reg_pc(archh)
+# ** Warning: (vsim-8683) Uninitialized out port /pc/f0/cout has no driver.
+# 
+# This port will contribute value (U) to the signal network.
+# 
+# ** Warning: (vsim-8683) Uninitialized out port /pc/f1/cout has no driver.
+# 
+# This port will contribute value (U) to the signal network.
+# 
+add wave -position insertpoint  \
+sim:/pc/clk
+add wave -position insertpoint  \
+sim:/pc/rst
+add wave -position insertpoint  \
+sim:/pc/enable
+add wave -position insertpoint  \
+sim:/pc/s_12
+add wave -position insertpoint  \
+sim:/pc/s_17
+add wave -position insertpoint  \
+sim:/pc/writepc1
+add wave -position insertpoint  \
+sim:/pc/writepc2
+add wave -position insertpoint  \
+sim:/pc/OP
+add wave -position insertpoint  \
+sim:/pc/feedback
+add wave -position insertpoint  \
+sim:/pc/outt
+force -freeze sim:/pc/writepc2 32'd5 0
+force -freeze sim:/pc/writepc1 32'd7 0
+force -freeze sim:/pc/s_17 00 0
+force -freeze sim:/pc/s_12 100 0
+force -freeze sim:/pc/clk 1 0, 0 {50 ps} -r 100
+force -freeze sim:/pc/rst 1 0
+force -freeze sim:/pc/enable 1 0
+run
+run
+force -freeze sim:/pc/rst 0 0
+run
+force -freeze sim:/pc/s_12 011 0
+run
+force -freeze sim:/pc/s_12 100 0
+run
+force -freeze sim:/pc/s_12 010 0
+run
+force -freeze sim:/pc/s_12 001 0
+run
+force -freeze sim:/pc/s_12 000 0
+run
+run
+run
+force -freeze sim:/pc/s_17 01 0
+run
+run
+run
+force -freeze sim:/pc/s_17 10 0
+run
+run
+run
+run
+run

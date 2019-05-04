@@ -1,0 +1,113 @@
+vsim -gui work.registerfile
+# vsim 
+# Start time: 15:54:12 on May 03,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.registerfile(rf)
+# Loading work.decoder(mymodel)
+# Loading work.my_ndff(a_my_ndff)
+# Loading work.mux8x1(arch)
+add wave -position insertpoint  \
+sim:/registerfile/sig_20 \
+sim:/registerfile/sig_13 \
+sim:/registerfile/sig_11 \
+sim:/registerfile/rst \
+sim:/registerfile/e \
+sim:/registerfile/clk \
+sim:/registerfile/WriteRegData_8 \
+sim:/registerfile/WriteRegData_7 \
+sim:/registerfile/WriteRegData_6 \
+sim:/registerfile/WriteRegData_5 \
+sim:/registerfile/WriteRegData_4 \
+sim:/registerfile/WriteRegData_32 \
+sim:/registerfile/WriteRegData_3 \
+sim:/registerfile/WriteRegData_2 \
+sim:/registerfile/WriteRegData_16 \
+sim:/registerfile/WriteRegData_1 \
+sim:/registerfile/WriteRegAdd2 \
+sim:/registerfile/WriteRegAdd1 \
+sim:/registerfile/WriteRegAdd \
+sim:/registerfile/WriteEnable_32 \
+sim:/registerfile/WriteEnable_16 \
+sim:/registerfile/SecondOpData \
+sim:/registerfile/SecondOpAdd \
+sim:/registerfile/M_in8 \
+sim:/registerfile/M_in7 \
+sim:/registerfile/M_in6 \
+sim:/registerfile/M_in5 \
+sim:/registerfile/M_in4 \
+sim:/registerfile/M_in3 \
+sim:/registerfile/M_in2 \
+sim:/registerfile/M_in1 \
+sim:/registerfile/FirstOpData \
+sim:/registerfile/FirstOpAdd \
+sim:/registerfile/D_Out \
+sim:/registerfile/D3_Out \
+sim:/registerfile/D2_Out \
+sim:/registerfile/D1_Out
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+# 
+#           File in use by: Abdo  Hostname: DESKTOP-H80HTQE  ProcessID: 8500
+# 
+#           Attempting to use alternate WLF file "./wlftarj81b".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+# 
+#           Using alternate file: ./wlftarj81b
+# 
+force -freeze sim:/registerfile/rst 1 0
+force -freeze sim:/registerfile/clk 1 0, 0 {50 ns} -r 100
+run
+force -freeze sim:/registerfile/sig_11 0 0
+force -freeze sim:/registerfile/sig_20 0 0
+force -freeze sim:/registerfile/sig_20 0 0
+force -freeze sim:/registerfile/sig_11 1 0
+force -freeze sim:/registerfile/WriteRegAdd1 3'h0 0
+force -freeze sim:/registerfile/WriteRegAdd2 3'h1 0
+force -freeze sim:/registerfile/WriteRegData_16 16'h0005 0
+run
+force -freeze sim:/registerfile/e 1 0
+run
+force -freeze sim:/registerfile/sig_13 0 0
+run
+run
+force -freeze sim:/registerfile/rst 0 0
+run
+run
+force -freeze sim:/registerfile/sig_13 1 0
+run
+run
+force -freeze sim:/registerfile/FirstOpAdd 3'h0 0
+force -freeze sim:/registerfile/SecondOpAdd 3'h1 0
+force -freeze sim:/registerfile/sig_11 0 0
+run
+force -freeze sim:/registerfile/WriteRegData_32 32'h00110022 0
+force -freeze sim:/registerfile/sig_11 1 0
+force -freeze sim:/registerfile/sig_13 0 0
+force -freeze sim:/registerfile/sig_20 1 0
+run
+run
+force -freeze sim:/registerfile/sig_20 0 0
+force -freeze sim:/registerfile/sig_13 0 1
+force -freeze sim:/registerfile/sig_11 1 0
+force -freeze sim:/registerfile/WriteRegAdd2 3'h2 0
+force -freeze sim:/registerfile/WriteRegData_16 16'h0007 0
+run
+run
+force -freeze sim:/registerfile/sig_13 1 0
+force -freeze sim:/registerfile/WriteRegAdd2 3'h2 0
+run
+run
+force -freeze sim:/registerfile/WriteRegData_32 32'h00440033 0
+force -freeze sim:/registerfile/sig_20 1 0
+force -freeze sim:/registerfile/WriteRegAdd1 3'h5 0
+force -freeze sim:/registerfile/WriteRegAdd2 3'h6 0
+run
+run
+force -freeze sim:/registerfile/sig_11 0 0
+force -freeze sim:/registerfile/sig_13 0 0
+force -freeze sim:/registerfile/sig_20 0 0
+force -freeze sim:/registerfile/FirstOpAdd 3'h5 0
+force -freeze sim:/registerfile/SecondOpAdd 3'h6 0
+run
+run
