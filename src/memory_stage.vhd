@@ -12,11 +12,13 @@ entity memory_stage is
     ea_reg: in std_logic_vector(address_line-1 downto 0);
     pc_reg: in std_logic_vector(32-1 downto 0);
     sp_reg: in std_logic_vector(32-1 downto 0);
-	address_selection: in std_logic_vector(1 downto 0);
+	signal_6: in std_logic_vector(2-1 downto 0);
 	----
 	-- using pc here too
-	alu_result_in: in std_logic_vector(31 downto 0);
-	alu_result_out: out std_logic_vector(31 downto 0);
+	alu_result_in: in std_logic_vector(32-1 downto 0);
+	alu_result_out: out std_logic_vector(32-1 downto 0);
+	mul_result_in: in std_logic_vector(32-1 downto 0);
+	mul_result_out: out std_logic_vector(32-1 downto 0);
 	signal_5: in std_logic;
 	----
 	instr_26_24_in: in std_logic_vector(2 downto 0);
@@ -29,6 +31,7 @@ entity memory_stage is
 	signal_3: in std_logic;
 	signal_4: in std_logic;
 	signal_16: in std_logic;
+	instr_read: in std_logic;
 	mem_data_out: out std_logic_vector(32-1 downto 0)
   );
 end memory_stage;
@@ -58,15 +61,15 @@ begin
 
 		if rising_edge(clk) then
 			----
-			if address_selection = "00" then
+			if signal_6 = "00" then
 				ram_address <= sp_reg(20-1 downto 0); -- Stack Pointer
-			elsif address_selection = "01" then
+			elsif signal_6 = "01" then
 				ram_address <= std_logic_vector(shift_left(unsigned(ea_reg), 2)); -- shift extended for EA
-			elsif address_selection = "10" then
+			elsif signal_6 = "10" then
 				ram_address <= pc_reg(20-1 downto 0); -- PC 
 			end if;
 			write_enable_internal <= signal_3;
-			read_enable_internal <= signal_4;
+			read_enable_internal <= signal_4 or instr_read;
 			is_sixteen_internal <= signal_16;
 			if signal_5 = '0' then
 					data_in_internal <= pc_reg;
@@ -84,6 +87,7 @@ begin
 			end if;
 			----
 			alu_result_out <= alu_result_in;
+			mul_result_out <= mul_result_in;
 		end if;
 
 	end process;
