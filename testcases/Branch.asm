@@ -17,11 +17,11 @@ in R4     # R4=300
 Push R4   # sp=FFFFFFFE, M[FFFFFFFF]=300
 JMP R1 
 INC R1	  #  this statement shouldn't be executed,
- 
+
 # check flag fowarding  
 .ORG 30
 AND R1, R5   # R5=0 , Z = 1
-            # try interrupt here
+# try interrupt here
 JZ R2      # Jump taken, Z = 0
 SETC        #  this statement shouldn't be executed, C-->1
 
@@ -44,10 +44,10 @@ rti
 
 # check on load use
 .ORG 200
-SET C      # C-->1
+SETC      # C-->1
 POP R6     # R6=300, SP=FFFFFFFF
 Call R6    # SP=FFFFFFFD, M[FFFFFFFF]=half next PC,M[FFFFFFFE]=other half next PC
-          # try interrup here
+# try interrup here
 INC R6	  # R6=401, this statement shouldn't be executed till call returns, C--> 0, N-->0,Z-->0
 NOP
 NOP
