@@ -3,8 +3,8 @@ Use ieee.std_logic_1164.all;
 
 entity pc is 
 port ( clk,rst,enable : in std_logic;
- s_12 : in std_logic_vector(2 DOWNTO 0);
- s_17 : in std_logic_vector(1 DOWNTO 0);
+ signal_12 : in std_logic_vector(2 DOWNTO 0);
+ signal_17 : in std_logic_vector(1 DOWNTO 0);
  writepc1 : IN std_logic_vector(31 DOWNTO 0);
  writepc2 : IN std_logic_vector(31 DOWNTO 0);
  OP : out std_logic_vector(31 DOWNTO 0));
@@ -49,8 +49,8 @@ output :out std_logic_vector(31 downto 0));
   
    f0:  my_nadder_pc_sp PORT MAP(outt, one,'0',temp0,cou);
    f1: my_nadder_pc_sp PORT MAP(outt,two,'0',temp1,cou);
-   f2: mux8x1_pc PORT MAP(temp2,writepc1,writepc2,zero,one,s_12,feedback);
-   f3: mux4x1_pc_sp PORT MAP(temp0,temp1,outt,s_17,temp2);
+   f2: mux8x1_pc PORT MAP(temp2,writepc1,writepc2,zero,one,signal_12,feedback);
+   f3: mux4x1_pc_sp PORT MAP(temp0,temp1,outt,signal_17,temp2);
    f4: reg_pc port map (clk,rst,enable,feedback,outt);
    OP<=feedback;
 

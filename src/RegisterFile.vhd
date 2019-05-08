@@ -8,7 +8,6 @@ entity RegisterFile is
        SecondOpAdd: in std_logic_vector(2 downto 0);
        WriteRegAdd1: in std_logic_vector(2 downto 0);
        WriteRegAdd2: in std_logic_vector(2 downto 0);
-       WriteRegData_16:in std_logic_vector(15 downto 0);
        WriteRegData_32:in std_logic_vector(31 downto 0);
        sig_13:in std_logic;
        sig_20:in std_logic; --WriteInTwoReg signal
@@ -49,7 +48,7 @@ signal WriteRegAdd:std_logic_vector (2 DOWNTO 0);
 
 signal WriteEnable_16 :std_logic;
 signal WriteEnable_32 :std_logic;
- 
+signal WriteRegData_16: std_logic_vector(15 downto 0);
 signal WriteRegData_1 : std_logic_vector(15 DOWNTO 0);
 signal WriteRegData_2 : std_logic_vector(15 DOWNTO 0);
 signal WriteRegData_3 : std_logic_vector(15 DOWNTO 0);
@@ -63,6 +62,11 @@ begin
    -- I want to write in Rsrc or Rdest
    WriteRegAdd <= WriteRegAdd1 when sig_13='0' 
           else    WriteRegAdd2 when sig_13='1' ;
+
+   --------------------------------------------------
+
+   WriteRegData_16<= WriteRegData_32 (15 downto 0);
+
 
    --Enables of the decoders---------------------------------------------------------------
    WriteEnable_16 <= (sig_11 and (not sig_20));
