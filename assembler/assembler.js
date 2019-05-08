@@ -114,8 +114,16 @@ async function main() {
     } else if (twoOp.indexOf(cmd) > -1) {
       const rSrc = parts[1].replace(",", "");
       const rDst = parts[2];
+
+      if (["shl", "shr"].indexOf(cmd) > -1) {
+        // TODO: put the Immediate value
+        rDst = hex2bin(rDst);
+      }
+
       // TODO: insert those
     } else if (memOp.indexOf(cmd) > -1) {
+      const rDst = parts[1];
+      // TODO: get the rest of operands conditonally
     } else if (branchOp.indexOf(cmd) > -1) {
     } else {
       // reset && int
