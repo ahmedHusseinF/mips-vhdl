@@ -1,4 +1,3 @@
-
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
@@ -10,13 +9,14 @@ entity memory_stage is
     clk: in std_logic;
 	----
     ea_reg: in std_logic_vector(address_line-1 downto 0);
-    pc_reg: in std_logic_vector(32-1 downto 0);
+    pc_reg_ex: in std_logic_vector(32-1 downto 0);
+    pc_reg_fetch: in std_logic_vector(32-1 downto 0); 
     sp_reg: in std_logic_vector(32-1 downto 0);
 	signal_6: in std_logic_vector(2-1 downto 0);
 	----
 	-- using pc here too
-	alu_result_in: in std_logic_vector(32-1 downto 0);
-	alu_result_out: out std_logic_vector(32-1 downto 0);
+	alu_result_in: in std_logic_vector(16-1 downto 0);
+	alu_result_out: out std_logic_vector(16-1 downto 0);
 	mul_result_in: in std_logic_vector(32-1 downto 0);
 	mul_result_out: out std_logic_vector(32-1 downto 0);
 	signal_5: in std_logic;
@@ -66,15 +66,17 @@ begin
 			elsif signal_6 = "01" then
 				ram_address <= std_logic_vector(shift_left(unsigned(ea_reg), 2)); -- shift extended for EA
 			elsif signal_6 = "10" then
-				ram_address <= pc_reg(20-1 downto 0); -- PC 
+				ram_address <= pc_reg_ex(20-1 downto 0); -- PC from execute stage
+			elsif signal_6 = "11" then
+				ram_address <= pc_reg_fetch(20-1 downto 0); -- PC from fetch stage
 			end if;
 			write_enable_internal <= signal_3;
 			read_enable_internal <= signal_4 or instr_read;
 			is_sixteen_internal <= signal_16;
 			if signal_5 = '0' then
-					data_in_internal <= pc_reg;
+					data_in_internal <= pc_reg_ex;
 			else
-					data_in_internal <= alu_result_in;
+					data_in_internal <= "0000000000000000"&alu_result_in;
 			end if;
 			mem_data_out <= data_out_internal; -- to output
 			----
