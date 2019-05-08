@@ -20,7 +20,7 @@ INC R1	  #  this statement shouldn't be executed,
  
 # check flag fowarding  
 .ORG 30
-AND R1,R5   # R5=0 , Z = 1
+AND R1, R5   # R5=0 , Z = 1
             # try interrupt here
 JZ  R2      # Jump taken, Z = 0
 SETC        #  this statement shouldn't be executed, C-->1
@@ -38,7 +38,7 @@ INC R1
 
 .ORG 100
 CLRC
-AND R0,R0    # N=0,Z=1
+AND R0, R0    # N=0,Z=1
 out R6
 rti
 
@@ -54,8 +54,8 @@ NOP
 
 
 .ORG 300
-Add R3,R6 # R6=400
-Add R1,R2 # R1=80, C->0,N=0, Z=0
+Add R3, R6 # R6=400
+Add R1, R2 # R1=80, C->0,N=0, Z=0
 ret
 SetC           # this should not be executed
 
