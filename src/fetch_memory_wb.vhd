@@ -13,7 +13,6 @@ port (
     	pc_reg_ex: in std_logic_vector(32-1 downto 0);
     	pc_reg_fetch: in std_logic_vector(32-1 downto 0); 
     	sp_reg: in std_logic_vector(32-1 downto 0);
-	signal_6: in std_logic_vector(2-1 downto 0);
 	----
 	-- using pc here too
 	alu_result_in: in std_logic_vector(16-1 downto 0);
@@ -29,6 +28,7 @@ port (
 	signal_8: in std_logic_vector(1 downto 0);
 	signal_3: in std_logic;
 	signal_4: in std_logic;
+	signal_6: in std_logic_vector(2-1 downto 0);
 	signal_12: in std_logic_vector(2 downto 0);
 	signal_17: in std_logic_vector(1 downto 0);
 	signal_16: in std_logic;
@@ -47,7 +47,7 @@ port (
 end fetch_memory_wb;
 
 Architecture fmw_Implment of fetch_memory_wb is
-
+	
 
 component memory_stage is
   generic (reg_width: Integer := 16;address_line: Integer := 20; ram_width: Integer := 16);

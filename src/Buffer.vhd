@@ -9,7 +9,7 @@ q : OUT std_logic_vector(n-1 DOWNTO 0)
 );
       
 END Bufer;
-	
+	 	
 ARCHITECTURE Buf OF Bufer IS
 BEGIN
 PROCESS (Clk,Rst)
