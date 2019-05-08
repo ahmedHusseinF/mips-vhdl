@@ -22,7 +22,7 @@ INC R1	  #  this statement shouldn't be executed,
 .ORG 30
 AND R1, R5   # R5=0 , Z = 1
             # try interrupt here
-JZ  R2      # Jump taken, Z = 0
+JZ R2      # Jump taken, Z = 0
 SETC        #  this statement shouldn't be executed, C-->1
 
 # check on flag updated on jump
@@ -32,8 +32,8 @@ JC R3      # Jump Not taken
 
 # check destination forwarding
 NOT R5     # R5=FFFF, Z= 0, C--> not change, N=1
-in  R6     # R6=200, flag no change
-JN  R6     # jump taken, N = 0
+in R6     # R6=200, flag no change
+JN R6     # jump taken, N = 0
 INC R1
 
 .ORG 100
