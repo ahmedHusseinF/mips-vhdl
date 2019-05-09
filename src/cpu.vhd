@@ -14,6 +14,17 @@ end cpu;
 
 architecture cpu_wiring of cpu is
 
+	component Bufer IS
+	GENERIC ( n : integer := 16);
+	PORT( 
+	Clk,Rst,we : IN std_logic;
+	d : IN std_logic_vector(n-1 DOWNTO 0);
+	q : OUT std_logic_vector(n-1 DOWNTO 0)
+	);
+				
+	END component;
+
+
 	component fetch_memory_wb is 
 generic (reg_width: Integer := 16;address_line: Integer := 20; ram_width: Integer := 16);
 port (
@@ -54,9 +65,20 @@ port (
 	ex_mem_rdst: out std_logic_vector(2 downto 0);
 	Instr_WB1: out std_logic_vector(2 downto 0);
 	Instr_WB2: out std_logic_vector(2 downto 0);
-	INPort: in std_logic_vector(15 downto 0)
+	INPort: in std_logic_vector(15 downto 0);
+	s11_mem_wb_fetch : in std_logic;
+	s13_mem_wb_fetch : in std_logic;
+	s20_mem_wb_fetch : in std_logic;
+	s14_mem_wb_fetch : in std_logic;
+	s15_mem_wb_fetch : in std_logic;
+	s2_mem_wb_fetch : in std_logic;
+	s13_wb: out std_logic;
+  s11_wb: out std_logic;
+  s20_wb: out std_logic
 );
 end component;
+
+
 
 component RegisterFile is 
   
@@ -144,7 +166,6 @@ signal first_op_wb: std_logic_vector(2 downto 0);
 signal second_op_wb:std_logic_vector(2 downto 0);
 signal data_wb:std_logic_vector(31 downto 0);
 signal pc_fetch: std_logic_vector(31 downto 0);
-signal pc_execute: std_logic_vector(31 downto 0);
 signal regA_s: std_logic_vector(15 downto 0);
 signal regB_s: std_logic_vector(15 downto 0);
 signal ALUResult_mem_s: std_logic_vector(15 downto 0); --FU to be implmented
@@ -157,12 +178,9 @@ signal carryF_s: std_logic;			--to be implmented Jump
 signal writePC1_s: std_logic_vector(15 downto 0); --to be implmented Jump
 signal ID_EX_Rsrc_s: std_logic_vector(2 downto 0); --to be implmented FU
 signal ID_EX_Rdst_s : std_logic_vector(2 downto 0); --to be implmented FU
-signal Instr_op1_ex_mem: std_logic_vector(2 downto 0); --to be implmented Buffer
-signal Instr_op2_ex_mem: std_logic_vector(2 downto 0); --to be implmented Buffer
 signal PC_decode: std_logic_vector(31 downto 0); --to be implmented Buffer
 signal wb_rdst: std_logic_vector(2 downto 0); --to be implmented FU
 signal ex_mem_rdst_s: std_logic_vector(2 downto 0); --to be implmented FU
-signal sp_sig: std_logic_vector(31 downto 0); --to be implmented stack 
 signal writePC1_32: std_logic_vector(31 downto 0);
 signal ea_20: std_logic_vector(19 downto 0);
 
@@ -188,13 +206,150 @@ signal s19: std_logic;
 signal s20: std_logic;
 signal s21: std_logic_vector(1 downto 0);
  
+
+--Signals to buffers
+signal IF_ID_IN: std_logic_vector(63 downto 0);
+signal IF_ID_OUT: std_logic_vector(63 downto 0);
+
+signal ID_EX_IN: std_logic_vector(137 downto 0);
+signal ID_EX_OUT: std_logic_vector(137 downto 0);
+
+signal EX_MEM_IN: std_logic_vector(129 downto 0);
+signal EX_MEM_OUT: std_logic_vector(129 downto 0);
+
+--Intermediate signals
+signal pc_decode: std_logic_vector(31 downto 0);
+signal Instr_decode: std_logic_vector(31 downto 0);
+signal s7_ex: std_logic_vector(3 downto 0);
+signal s9_ex: std_logic;
+signal s10_ex: std_logic_vector(1 downto 0);
+signal regA_ex: std_logic_vector(15 downto 0);
+signal regB_ex: std_logic_vector(15 downto 0);
+signal Imm_execute: std_logic_vector(15 downto 0);
+signal ea_ex: std_logic_vector(19 downto 0);
+signal pc_execute: std_logic_vector(31 downto 0);
+signal pc_execute_out: std_logic_vector(31 downto 0);
+signal opA_ex: std_logic_vector(2 downto 0);
+signal opB_ex: std_logic_vector(2 downto 0);
+signal opA_ex_out: std_logic_vector(2 downto 0);
+signal opB_ex_out: std_logic_vector(2 downto 0);
+signal s1_mem_wb_fetch: std_logic_vector(1 downto 0);
+signal s2_mem_wb_fetch: std_logic;
+signal s3_mem_wb_fetch: std_logic;
+signal s4_mem_wb_fetch: std_logic;
+signal s5_mem_wb_fetch: std_logic;
+signal s6_mem_wb_fetch: std_logic_vector(1 downto 0);
+signal s8_mem_wb_fetch: std_logic_vector(1 downto 0);
+signal s11_mem_wb_fetch: std_logic;
+signal s12_mem_wb_fetch: std_logic_vector(2 downto 0);
+signal s13_mem_wb_fetch: std_logic;  
+signal s14_mem_wb_fetch: std_logic;
+signal s15_mem_wb_fetch: std_logic;
+signal s16_mem_wb_fetch: std_logic;
+signal s17_mem_wb_fetch: std_logic_logic(1 downto 0);
+signal s18_mem_wb_fetch: std_logic;
+signal s19_mem_wb_fetch: std_logic;
+signal s20_mem_wb_fetch: std_logic;
+signal s21_mem_wb_fetch: std_logic_vector(1 downto 0);
+signal ALUResult_MEM: std_logic_vector(15 downto 0);
+signal ALUMUL_MEM: std_logic_vector(31 downto 0);
+signal pc_memory: std_logic_vector(31 downto 0);
+signal opA_mem: std_logic_vector(2 downto 0);
+signal opB_mem: std_logic_vector(2 downto 0);
+signal ea_mem: std_logic_vector(19 downto 0);
+signal s13_decode: std_logic;
+signal s11_decode: std_logic;
+signal s20_decode: std_logic;
+
 begin
 
+
+
+--IF/ID
+IF_ID_IN <= pc_fetch&InstrSig;
+--stage output signals
+pc_decode <= IF_ID_OUT(63 downto 32);
+Instr_decode <= IF_ID_OUT(31 downto 0);
+--pc_fetch , InstrSig  ==> 32+32 = 64
+	IF_ID: Bufer GENERIC map(64) PORT map( 
+		Clk => clk,
+		Rst => rst,
+		we => '1',
+		d => IF_ID_IN,
+		q => IF_ID_OUT
+		);
+
+
+--ID/EX
+ea_20 <= Instr_decode(4 downto 0)&InstrSig(31 downto 17);
+ID_EX_IN <= s1&s2&s3&s4&s5&s6&s7&s8&s9&s10&s11&s12&s13&s14&s15&s16&s17&s18&s19&s20&s21&regA_s&regB_s&(Instr_decode(31 downto 16))&ea_20&pc_decode&(Instr_decode(10 downto 5));
+--Stage output signals
+s7_ex <= ID_EX_OUT(129 downto 126);
+s9_ex <= ID_EX_OUT(123);
+s10_ex <= ID_EX_OUT(122 downto 121);
+regA_ex <= ID_EX_OUT(105 downto 90);
+regB_ex <= ID_EX_OUT(89 downto 74);
+Imm_execute <= ID_EX_OUT(73 downto 58);
+ea_ex <= ID_EX_OUT(57 downto 38);
+pc_execute <= ID_EX_OUT(37 downto 6);
+opA_ex <= ID_EX_OUT(5 downto 3);
+opB_ex <= ID_EX_OUT(2 downto 0);
+--control signals 32 + REGA 16 + REGB 16 + IMM 16 + EA 20 + PC 32 + opA 3 bits + opB 3 bits = 138 bits
+	ID_EX: Bufer GENERIC map(138) PORT map( 
+		Clk => clk,
+		Rst => rst,
+		we => '1',
+		d => ID_EX_IN,
+		q => ID_EX_OUT
+		);
+
+
+
+--EX/MEM
+
+EX_MEM_IN <= ea_ex&s1&s2&s3&s4&s5&s6&s8&s11&s12&s13&s14&s15&s16&s17&s18&s19&s20&s21&ALUResult_s&ALUMul_s&pc_execute_out&opA_ex_out&opB_ex_out;
+--Stage output signals
+
+ea_mem <= EX_MEM_OUT(130 downto 111);  
+s1_mem_wb_fetch <= EX_MEM_OUT(110 downto 109);  
+s2_mem_wb_fetch <= EX_MEM_OUT(108); 
+s3_mem_wb_fetch <= EX_MEM_OUT(107); 
+s4_mem_wb_fetch <= EX_MEM_OUT(106); 
+s5_mem_wb_fetch <= EX_MEM_OUT(105);
+s6_mem_wb_fetch <= EX_MEM_OUT(104 downto 103);
+s8_mem_wb_fetch <= EX_MEM_OUT(102 downto 101);
+s11_mem_wb_fetch <= EX_MEM_OUT(100);
+s12_mem_wb_fetch <= EX_MEM_OUT(99 downto 97);
+s13_mem_wb_fetch <= EX_MEM_OUT(96);
+ s14_mem_wb_fetch <= EX_MEM_OUT(95);
+ s15_mem_wb_fetch <= EX_MEM_OUT(94);
+ s16_mem_wb_fetch <= EX_MEM_OUT(93);
+ s17_mem_wb_fetch <= EX_MEM_OUT(92 downto 91);
+ s18_mem_wb_fetch <= EX_MEM_OUT(90);
+ s19_mem_wb_fetch <= EX_MEM_OUT(89);
+ s20_mem_wb_fetch <= EX_MEM_OUT(88);
+ s21_mem_wb_fetch <= EX_MEM_OUT(87 downto 86);
+
+ALUResult_MEM <= EX_MEM_OUT(85 downto 70);
+ALUMUL_MEM <= EX_MEM_OUT(69 downto 38);
+pc_memory <= EX_MEM_OUT(37 downto 6);
+opA_mem <= EX_MEM_OUT(5 downto 3);
+opB_mem <= EX_MEM_OUT(2 downto 0);
+
+
+--control signals 25 bits + ALUResult 16 bits + ALUMul 32 bits + PC 32 bits + opA 3 bits + opB 3 bits = 111 bits
+	EX_MEM: Bufer GENERIC map(130) PORT map( 
+		Clk => clk,
+		Rst => rst,
+		we => '1',
+		d => EX_MEM_IN,
+		q => EX_MEM_OUT
+		);
 
 --Control Unit
 CU: Control_Unit port map
 (
- OpCode => InstrSig(15 downto 11),
+ OpCode => Instr_decode(15 downto 11),
  INTR => Int,
  RST => rst,
  Sig_1 => s1,
@@ -221,37 +376,36 @@ CU: Control_Unit port map
  Bubble => '0'  --to be implmented
  );
 
-ea_20 <= InstrSig(4 downto 0)&InstrSig(31 downto 17);
 writePC1_32 <= "0000000000000000"&writePC1_s;
 fmw : fetch_memory_wb port map(
 	clk => clk,
 	rst => rst,
 	enable => '1',
 	----
-    	ea_reg => ea_20,
-    	pc_reg_ex => pc_execute,
+    	ea_reg => ea_mem,
+    	pc_reg_ex => pc_memory,
     	pc_reg_fetch => pc_fetch,
     	sp_reg => sp_sig,
 	----
 	-- using pc here too
-	alu_result_in => ALUResult_s,
-	mul_result_in => ALUMul_s,
+	alu_result_in => ALUResult_MEM,
+	mul_result_in => ALUMUL_MEM,
 	writePC1 => writePC1_32,
-	signal_5 => s5,
+	signal_5 => s5_mem_wb_fetch,
 	----
-	instr_26_24_in => Instr_op1_ex_mem,
-	instr_23_21_in => Instr_op2_ex_mem,
-	signal_18 => s18,
+	instr_26_24_in => opA_mem,
+	instr_23_21_in => opB_mem,
+	signal_18 => s18_mem_wb_fetch,
 	----
-	signal_1 => s1,
-	signal_8 => s8,
-	signal_3 => s3,
-	signal_4 => s4,
-	signal_6 => s6,
-	signal_12 => s12,
-	signal_17 => s17,
-	signal_16 => s16,
-	signal_19 => s19,
+	signal_1 => s1_mem_wb_fetch,
+	signal_8 => s8_mem_wb_fetch,
+	signal_3 => s3_mem_wb_fetch,
+	signal_4 => s4_mem_wb_fetch,
+	signal_6 => s6_mem_wb_fetch,
+	signal_12 => s12_mem_wb_fetch,
+	signal_17 => s17_mem_wb_fetch,
+	signal_16 => s16_mem_wb_fetch,
+	signal_19 => s19_mem_wb_fetch,
 	instr_read => '1',  --to be implmented Hazard Unit !bubble
 	----
 	Instr => InstrSig,
@@ -261,25 +415,34 @@ fmw : fetch_memory_wb port map(
 	ex_mem_rdst => ex_mem_rdst_s,
 	Instr_WB1 => first_op_wb,
 	Instr_WB2 => second_op_wb,
-	INPort => INPort
+	INPort => INPort,
+	s11_mem_wb_fetch => s11_mem_wb_fetch,
+	s13_mem_wb_fetch => s13_mem_wb_fetch,
+	s20_mem_wb_fetch => s20_mem_wb_fetch,
+	s14_mem_wb_fetch => s14_mem_wb_fetch,
+	s15_mem_wb_fetch => s15_mem_wb_fetch,
+	s2_mem_wb_fetch => s2_mem_wb_fetch,
+	s13_wb => s13_decode,
+  s11_wb => s11_decode,
+  s20_wb => s20_decode
 );
 
 
 es: execute_stage port map (
-    PC_in => pc_fetch,
-    regA => regA_s,
-    regB => regB_s,
-    imm => InstrSig(31 downto 16),
-    instr26_24_in => InstrSig(10 downto 8),
-    instr23_21_in => InstrSig(7 downto 5),
+    PC_in => pc_execute,
+    regA => regA_ex,
+    regB => regA_ex,
+    imm => Imm_execute,
+    instr26_24_in => opA_ex,
+    instr23_21_in => opB_ex,
     ALUres_MEM => ALUResult_mem_s,
     ALUres_WB => ALUResult_wb_s,
-    signal_7 => s7,
-    signal_9 => s9,
-    signal_10 => s10,
+    signal_7 => s7_ex,
+    signal_9 => s9_ex,
+    signal_10 => s10_ex,
     signal_H0 => "00",
     signal_H1 => "00",
-    PC_out => pc_execute,
+    PC_out => pc_execute_out,
     outPort => OutPort,
     ALU_result => ALUResult_s,
     mulRes => ALUMul_s,
@@ -289,24 +452,26 @@ es: execute_stage port map (
     writePC1 => writePC1_s,  --Unhandled 16 bits PC to 32 bits PC mapping triggered when jumping
     ID_EX_Rsrc => ID_EX_Rsrc_s,
     ID_EX_Rdst => ID_EX_Rdst_s,
-    instr26_24_out => Instr_op1_ex_mem,
-    instr23_21_out => Instr_op1_ex_mem
+    instr26_24_out => opA_ex_out,
+    instr23_21_out => opA_ex_out
 );
 
 regFile : RegisterFile port map(
 	clk => clk,
 	rst => rst,
 	e => '1',
-     	FirstOpAdd => InstrSig(10 downto 8), 
-       	SecondOpAdd => InstrSig(7 downto 5),
+     	FirstOpAdd => Instr_decode(10 downto 8), 
+       	SecondOpAdd => Instr_decode(7 downto 5),
        	WriteRegAdd1 => first_op_wb,
        	WriteRegAdd2 => second_op_wb,
        	WriteRegData_32 => data_wb,
-       	sig_13 => s13,
-       	sig_20 => s20, 
-       	sig_11 => s11,
+       	sig_13 => s13_decode,
+       	sig_20 => s20_decode, 
+       	sig_11 => s11_decode,
        	FirstOpData =>regA_s,
        	SecondOpData => regB_s
 );
+
+
 
 end architecture;

@@ -38,7 +38,7 @@ begin
 
 	-- intialize all as if it were a NOP inst.
 if(RST='1') then
-	Sig_1 <="00";
+Sig_1 <="00";
 Sig_2 <='0';
 Sig_3  <='0';
 Sig_4  <='0';
