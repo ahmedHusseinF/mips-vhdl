@@ -35,7 +35,7 @@ port (
     	ea_reg: in std_logic_vector(address_line-1 downto 0);
     	pc_reg_ex: in std_logic_vector(32-1 downto 0);
     	pc_reg_fetch: in std_logic_vector(32-1 downto 0); 
-    	sp_reg: in std_logic_vector(32-1 downto 0);
+    	--sp_reg: in std_logic_vector(32-1 downto 0);
 	----
 	-- using pc here too
 	alu_result_in: in std_logic_vector(16-1 downto 0);
@@ -178,7 +178,6 @@ signal carryF_s: std_logic;			--to be implmented Jump
 signal writePC1_s: std_logic_vector(15 downto 0); --to be implmented Jump
 signal ID_EX_Rsrc_s: std_logic_vector(2 downto 0); --to be implmented FU
 signal ID_EX_Rdst_s : std_logic_vector(2 downto 0); --to be implmented FU
-signal PC_decode: std_logic_vector(31 downto 0); --to be implmented Buffer
 signal wb_rdst: std_logic_vector(2 downto 0); --to be implmented FU
 signal ex_mem_rdst_s: std_logic_vector(2 downto 0); --to be implmented FU
 signal writePC1_32: std_logic_vector(31 downto 0);
@@ -214,8 +213,8 @@ signal IF_ID_OUT: std_logic_vector(63 downto 0);
 signal ID_EX_IN: std_logic_vector(137 downto 0);
 signal ID_EX_OUT: std_logic_vector(137 downto 0);
 
-signal EX_MEM_IN: std_logic_vector(129 downto 0);
-signal EX_MEM_OUT: std_logic_vector(129 downto 0);
+signal EX_MEM_IN: std_logic_vector(130 downto 0);
+signal EX_MEM_OUT: std_logic_vector(130 downto 0);
 
 --Intermediate signals
 signal pc_decode: std_logic_vector(31 downto 0);
@@ -246,7 +245,7 @@ signal s13_mem_wb_fetch: std_logic;
 signal s14_mem_wb_fetch: std_logic;
 signal s15_mem_wb_fetch: std_logic;
 signal s16_mem_wb_fetch: std_logic;
-signal s17_mem_wb_fetch: std_logic_logic(1 downto 0);
+signal s17_mem_wb_fetch: std_logic_vector(1 downto 0);
 signal s18_mem_wb_fetch: std_logic;
 signal s19_mem_wb_fetch: std_logic;
 signal s20_mem_wb_fetch: std_logic;
@@ -338,7 +337,7 @@ opB_mem <= EX_MEM_OUT(2 downto 0);
 
 
 --control signals 25 bits + ALUResult 16 bits + ALUMul 32 bits + PC 32 bits + opA 3 bits + opB 3 bits = 111 bits
-	EX_MEM: Bufer GENERIC map(130) PORT map( 
+	EX_MEM: Bufer GENERIC map(131) PORT map( 
 		Clk => clk,
 		Rst => rst,
 		we => '1',
@@ -385,7 +384,7 @@ fmw : fetch_memory_wb port map(
     	ea_reg => ea_mem,
     	pc_reg_ex => pc_memory,
     	pc_reg_fetch => pc_fetch,
-    	sp_reg => sp_sig,
+    --	sp_reg => sp_sig,
 	----
 	-- using pc here too
 	alu_result_in => ALUResult_MEM,

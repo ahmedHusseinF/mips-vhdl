@@ -12,7 +12,7 @@ port (
     	ea_reg: in std_logic_vector(address_line-1 downto 0);
     	pc_reg_ex: in std_logic_vector(32-1 downto 0);
     	pc_reg_fetch: in std_logic_vector(32-1 downto 0); 
-    	sp_reg: in std_logic_vector(32-1 downto 0);
+    	--sp_reg: in std_logic_vector(32-1 downto 0);
 	----
 	-- using pc here too
 	alu_result_in: in std_logic_vector(16-1 downto 0);
@@ -154,8 +154,8 @@ signal sp_s2: std_logic;
 
 
 --Intermediate signals
-signal wb_alu: std_logic_vector(15 downto 0);
-signal wb_mul: std_logic_vector(31 downto 0);
+signal ALUResult_wb: std_logic_vector(15 downto 0);
+signal ALUMul_wb: std_logic_vector(31 downto 0);
 signal instr_m_wb1: std_logic_vector(2 downto 0);
 signal instr_m_wb2: std_logic_vector(2 downto 0);
 signal s1_wb: std_logic_vector(1 downto 0);
@@ -163,6 +163,9 @@ signal s8_wb: std_logic_vector(1 downto 0);
 signal s19_wb: std_logic;
 signal Instr_wb_1: std_logic_vector(2 downto 0);
 signal	Instr_wb_2: std_logic_vector(2 downto 0);
+signal mem_data_wb_out : std_logic_vector(31 downto 0);
+
+
 
 --Buffer
 signal MEM_WB_IN: std_logic_vector(93 downto 0);
@@ -200,13 +203,13 @@ m: memory_stage port map(
 );
 
 wb: wb_stage port map (
-	alu_result_in => ,
-	mul_result_in => ,
+	alu_result_in => ALUResult_wb,
+	mul_result_in =>ALUMul_wb ,
 	----
-	instr_26_24_in => ,
-	instr_23_21_in => ,
+	instr_26_24_in => Instr_wb_1,
+	instr_23_21_in => Instr_wb_2,
 	----
-	mem_data_in => ,
+	mem_data_in => mem_data_wb_out,
 	----
 	INPort => INPort,
 	----
@@ -258,7 +261,7 @@ ALUResult_wb <= MEM_WB_OUT(53 downto 38);
 ALUMul_wb <= MEM_WB_OUT(37 downto 6);
 Instr_wb_1 <= MEM_WB_OUT(5 downto 3); 
 Instr_wb_2 <= MEM_WB_OUT(2 downto 0);
-s20_wb: out std_logic
+
 
 
 --signals 8 bits + mem_data 32 bits + ALUResult_out 16 bits + ALUMul_out 32 bits+ opA 3 bits + opB 3 bits = 94 bits
