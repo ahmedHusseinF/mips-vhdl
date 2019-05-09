@@ -25,7 +25,7 @@ architecture cpu_wiring of cpu is
 	END component;
 
 
-	component fetch_memory_wb is 
+component fetch_memory_wb is 
 generic (reg_width: Integer := 16;address_line: Integer := 20; ram_width: Integer := 16);
 port (
 	clk: in std_logic;
@@ -63,8 +63,8 @@ port (
 	PC_out: out std_logic_vector(31 downto 0);
 	Rdst: out std_logic_vector(2 downto 0);
 	ex_mem_rdst: out std_logic_vector(2 downto 0);
-	Instr_WB1: out std_logic_vector(2 downto 0);
-	Instr_WB2: out std_logic_vector(2 downto 0);
+	Instr_WB1_out: out std_logic_vector(2 downto 0);
+	Instr_WB2_out: out std_logic_vector(2 downto 0);
 	INPort: in std_logic_vector(15 downto 0);
 	s11_mem_wb_fetch : in std_logic;
 	s13_mem_wb_fetch : in std_logic;
@@ -95,7 +95,6 @@ component RegisterFile is
        FirstOpData:out std_logic_vector(15 downto 0);
        SecondOpData:out std_logic_vector(15 downto 0)    
        );
-
   end component RegisterFile;
 
 component Control_Unit is 
@@ -262,22 +261,20 @@ signal s20_decode: std_logic;
 
 begin
 
-
-
+process(rst, clk)
+begin
+if rst = '1' then
+	IF_ID_IN <= (others => '0');
+	ID_EX_IN <= (others => '0');
+	EX_MEM_IN <= (others => '0');
+else
 --IF/ID
 IF_ID_IN <= pc_fetch&InstrSig;
 --stage output signals
 pc_decode <= IF_ID_OUT(63 downto 32);
 Instr_decode <= IF_ID_OUT(31 downto 0);
---pc_fetch , InstrSig  ==> 32+32 = 64
-	IF_ID: Bufer GENERIC map(64) PORT map( 
-		Clk => clk,
-		Rst => rst,
-		we => '1',
-		d => IF_ID_IN,
-		q => IF_ID_OUT
-		);
 
+-----------------------------------------------------------
 
 --ID/EX
 ea_20 <= Instr_decode(4 downto 0)&InstrSig(31 downto 17);
@@ -294,15 +291,8 @@ pc_execute <= ID_EX_OUT(37 downto 6);
 opA_ex <= ID_EX_OUT(5 downto 3);
 opB_ex <= ID_EX_OUT(2 downto 0);
 --control signals 32 + REGA 16 + REGB 16 + IMM 16 + EA 20 + PC 32 + opA 3 bits + opB 3 bits = 138 bits
-	ID_EX: Bufer GENERIC map(138) PORT map( 
-		Clk => clk,
-		Rst => rst,
-		we => '1',
-		d => ID_EX_IN,
-		q => ID_EX_OUT
-		);
 
-
+---------------------------------------------------------------
 
 --EX/MEM
 
@@ -337,6 +327,35 @@ opB_mem <= EX_MEM_OUT(2 downto 0);
 
 
 --control signals 25 bits + ALUResult 16 bits + ALUMul 32 bits + PC 32 bits + opA 3 bits + opB 3 bits = 111 bits
+--------------------------------------------------------------------------------------------
+end if;
+
+
+end process;
+
+
+--pc_fetch , InstrSig  ==> 32+32 = 64
+	IF_ID: Bufer GENERIC map(64) PORT map( 
+		Clk => clk,
+		Rst => rst,
+		we => '1',
+		d => IF_ID_IN,
+		q => IF_ID_OUT
+		);
+
+
+
+	ID_EX: Bufer GENERIC map(138) PORT map( 
+		Clk => clk,
+		Rst => rst,
+		we => '1',
+		d => ID_EX_IN,
+		q => ID_EX_OUT
+		);
+
+
+
+
 	EX_MEM: Bufer GENERIC map(131) PORT map( 
 		Clk => clk,
 		Rst => rst,
@@ -344,7 +363,7 @@ opB_mem <= EX_MEM_OUT(2 downto 0);
 		d => EX_MEM_IN,
 		q => EX_MEM_OUT
 		);
-
+	
 --Control Unit
 CU: Control_Unit port map
 (
@@ -412,8 +431,8 @@ fmw : fetch_memory_wb port map(
 	PC_out => pc_fetch,
 	Rdst => wb_rdst,
 	ex_mem_rdst => ex_mem_rdst_s,
-	Instr_WB1 => first_op_wb,
-	Instr_WB2 => second_op_wb,
+	Instr_WB1_out => first_op_wb,
+	Instr_WB2_out => second_op_wb,
 	INPort => INPort,
 	s11_mem_wb_fetch => s11_mem_wb_fetch,
 	s13_mem_wb_fetch => s13_mem_wb_fetch,
@@ -452,7 +471,7 @@ es: execute_stage port map (
     ID_EX_Rsrc => ID_EX_Rsrc_s,
     ID_EX_Rdst => ID_EX_Rdst_s,
     instr26_24_out => opA_ex_out,
-    instr23_21_out => opA_ex_out
+    instr23_21_out => opB_ex_out
 );
 
 regFile : RegisterFile port map(

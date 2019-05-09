@@ -7,8 +7,7 @@ port (
     fromMem : in std_logic_vector(31 downto 0);
     signal_8 : in std_logic_vector(1 downto 0);
     wbData: out std_logic_vector(31 downto 0);
-    writePC2: out std_logic_vector(31 downto 0);
-    Instr: out std_logic_vector(31 downto 0)
+    writePC2: out std_logic_vector(31 downto 0)
 );
 end entity;
 
@@ -18,6 +17,5 @@ begin
 		else (others => '0');
 	writePC2 <= fromMem when signal_8 = "01"
 		else (others => '0');
-	Instr <= fromMem;
 		
 end architecture;

@@ -1,0 +1,53 @@
+onerror {resume}
+quietly WaveActivateNextPane {} 0
+add wave -noupdate /cpu/clk
+add wave -noupdate /cpu/rst
+add wave -noupdate /cpu/Int
+add wave -noupdate /cpu/INPort
+add wave -noupdate /cpu/OutPort
+add wave -noupdate /cpu/CU/OpCode
+add wave -noupdate /cpu/fmw/address_line
+add wave -noupdate /cpu/fmw/pc_reg_fetch
+add wave -noupdate /cpu/fmw/Instr
+add wave -noupdate /cpu/fmw/mem_data_wb_out
+add wave -noupdate /cpu/es/regA
+add wave -noupdate /cpu/es/regB
+add wave -noupdate /cpu/es/ALU_result
+add wave -noupdate /cpu/es/mulRes
+add wave -noupdate /cpu/IF_ID/d
+add wave -noupdate /cpu/IF_ID/q
+add wave -noupdate /cpu/ID_EX/d
+add wave -noupdate /cpu/ID_EX/q
+add wave -noupdate /cpu/EX_MEM/d
+add wave -noupdate /cpu/EX_MEM/q
+add wave -noupdate /cpu/fmw/MEM_WB_IN
+add wave -noupdate /cpu/fmw/MEM_WB_OUT
+add wave -noupdate /cpu/regFile/M_in1
+add wave -noupdate /cpu/regFile/M_in2
+add wave -noupdate /cpu/regFile/M_in3
+add wave -noupdate /cpu/regFile/M_in4
+add wave -noupdate /cpu/regFile/M_in5
+add wave -noupdate /cpu/regFile/M_in6
+add wave -noupdate /cpu/regFile/M_in7
+add wave -noupdate /cpu/regFile/M_in8
+add wave -noupdate /cpu/regFile/WriteRegAdd1
+add wave -noupdate /cpu/regFile/WriteRegAdd2
+add wave -noupdate /cpu/regFile/WriteRegData_32
+TreeUpdate [SetDefaultTree]
+WaveRestoreCursors {{Cursor 1} {1092 ns} 0}
+quietly wave cursor active 1
+configure wave -namecolwidth 173
+configure wave -valuecolwidth 100
+configure wave -justifyvalue left
+configure wave -signalnamewidth 0
+configure wave -snapdistance 10
+configure wave -datasetprefix 0
+configure wave -rowmargin 4
+configure wave -childrowmargin 2
+configure wave -gridoffset 0
+configure wave -gridperiod 1
+configure wave -griddelta 40
+configure wave -timeline 0
+configure wave -timelineunits ns
+update
+WaveRestoreZoom {31 ns} {735 ns}

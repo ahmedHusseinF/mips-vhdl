@@ -40,8 +40,8 @@ port (
 	PC_out: out std_logic_vector(31 downto 0);
 	Rdst: out std_logic_vector(2 downto 0);
 	ex_mem_rdst: out std_logic_vector(2 downto 0);
-	Instr_WB1: out std_logic_vector(2 downto 0);
-	Instr_WB2: out std_logic_vector(2 downto 0);
+	Instr_WB1_out: out std_logic_vector(2 downto 0);
+	Instr_WB2_out: out std_logic_vector(2 downto 0);
 	INPort: in std_logic_vector(15 downto 0);
 	s11_mem_wb_fetch : in std_logic;
 	s13_mem_wb_fetch : in std_logic;
@@ -107,7 +107,6 @@ port (
 	signal_19 : in std_logic;
 	WriteData: out std_logic_vector(31 downto 0);
 	WritePC2: out std_logic_vector(31 downto 0);
-	Instr: out std_logic_vector(31 downto 0);
 	Rdst: out std_logic_vector(2 downto 0);
 	Instr_WB1: out std_logic_vector(2 downto 0);
 	Instr_WB2: out std_logic_vector(2 downto 0)
@@ -163,6 +162,9 @@ signal s8_wb: std_logic_vector(1 downto 0);
 signal s19_wb: std_logic;
 signal Instr_wb_1: std_logic_vector(2 downto 0);
 signal	Instr_wb_2: std_logic_vector(2 downto 0);
+signal Instr_wb_reg_1: std_logic_vector(2 downto 0);
+signal	Instr_wb_reg_2: std_logic_vector(2 downto 0);
+
 signal mem_data_wb_out : std_logic_vector(31 downto 0);
 
 
@@ -172,6 +174,10 @@ signal MEM_WB_IN: std_logic_vector(93 downto 0);
 signal MEM_WB_OUT: std_logic_vector(93 downto 0);
 
 begin
+
+	Instr <= mem_wb_data;
+	Instr_WB1_out <= Instr_wb_reg_1;
+	Instr_WB2_out <= Instr_wb_reg_2;
 m: memory_stage port map(
 	clk => clk,
 	----
@@ -218,10 +224,9 @@ wb: wb_stage port map (
 	signal_19 => signal_19,
 	WriteData => WriteData,
 	WritePC2 => W_PC2,
-	Instr => Instr,
 	Rdst => Rdst,
-	Instr_WB1 => Instr_wb_1,
-	Instr_WB2 => Instr_wb_2
+	Instr_WB1 => Instr_wb_reg_1,
+	Instr_WB2 => Instr_wb_reg_2
 );
 
 p: pc port map ( clk => clk,
@@ -248,7 +253,7 @@ sp1: sp port map (
 
 
 --MEM/WB
-MEM_WB_IN <= signal_1&signal_8&signal_19&s11_mem_wb_fetch&s13_mem_wb_fetch&s20_mem_wb_fetch&memory_wb_alu&mem_wb_data&memory_wb_mul&instr_26_24_mem_wb&instr_23_21_mem_wb;
+MEM_WB_IN <= signal_1&signal_8&signal_19&s11_mem_wb_fetch&s13_mem_wb_fetch&s20_mem_wb_fetch&mem_wb_data&memory_wb_alu&memory_wb_mul&instr_26_24_mem_wb&instr_23_21_mem_wb;
 --stage output signals
 s1_wb <= MEM_WB_OUT(93 downto 92);
 s8_wb <= MEM_WB_OUT(91 downto 90);

@@ -19,7 +19,6 @@ port (
 	signal_19 : in std_logic;
 	WriteData: out std_logic_vector(31 downto 0);
 	WritePC2: out std_logic_vector(31 downto 0);
-	Instr: out std_logic_vector(31 downto 0);
 	Rdst: out std_logic_vector(2 downto 0);
 	Instr_WB1: out std_logic_vector(2 downto 0);
 	Instr_WB2: out std_logic_vector(2 downto 0)
@@ -41,8 +40,7 @@ port (
     fromMem : in std_logic_vector(31 downto 0);
     signal_8 : in std_logic_vector(1 downto 0);
     wbData: out std_logic_vector(31 downto 0);
-    writePC2: out std_logic_vector(31 downto 0);
-    Instr: out std_logic_vector(31 downto 0)
+    writePC2: out std_logic_vector(31 downto 0)
 );
 end component;
 
@@ -58,6 +56,9 @@ port (
 end component;
 Signal MUX13_MUX0: std_logic_vector(31 downto 0);
 begin
+
+	Instr_WB1 <= instr_26_24_in;
+	Instr_WB2 <= instr_23_21_in;
 M13: MUX13 port map (
 	Instr_WB1 => instr_26_24_in,
 	Instr_WB2 => instr_23_21_in,
@@ -69,8 +70,7 @@ D1: DMUX1 port map (
 	fromMem => mem_data_in,
 	signal_8 => signal_8,
 	wbData => MUX13_MUX0,
-	writePC2 => WritePC2,
-	Instr => Instr
+	writePC2 => WritePC2
 );
 M0: MUX0 port map (
 	INPort => INport,
