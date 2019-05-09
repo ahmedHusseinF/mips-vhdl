@@ -28,7 +28,7 @@ port (
 	signal_8: in std_logic_vector(1 downto 0);
 	signal_3: in std_logic;
 	signal_4: in std_logic;
-	signal_6: in std_logic_vector(2-1 downto 0);
+	signal_6: in std_logic_vector(2-1 downto 0);	
 	signal_12: in std_logic_vector(2 downto 0);
 	signal_17: in std_logic_vector(1 downto 0);
 	signal_16: in std_logic;

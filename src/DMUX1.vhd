@@ -18,6 +18,6 @@ begin
 		else (others => '0');
 	writePC2 <= fromMem when signal_8 = "01"
 		else (others => '0');
-	Instr <= fromMem when signal_8 = "10";
+	Instr <= fromMem;
 		
 end architecture;

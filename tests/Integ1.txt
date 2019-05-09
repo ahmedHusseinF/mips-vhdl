@@ -1,0 +1,173 @@
+vsim -gui work.cpu
+# vsim 
+# Start time 011017 on May 09,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.cpu(cpu_wiring)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_signed(body)
+# Loading work.control_unit(control_unit1)
+# Loading work.fetch_memory_wb(fmw_implment)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory_stage(mem_stage_arch)
+# Loading work.ram(ram_wiring)
+# Loading work.wb_stage(wb_stage_imp)
+# Loading work.mux13(mux13_implment)
+# Loading work.dmux1(dmux1_implment)
+# Loading work.mux0(mux0_implment)
+# Loading work.pc(archi)
+# Loading work.my_nadder_pc_sp(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# Loading work.mux8x1_pc(arch)
+# Loading work.mux4x1_pc_sp(archit)
+# Loading work.reg_pc(archh)
+# Loading work.execute_stage(ex_implment)
+# Loading work.alu(alu_implment)
+# Loading work.my_nadder(a_my_nadder)
+# Loading work.mux11(mux11_implment)
+# Loading work.mux10(mux10_implment)
+# Loading work.dmux0(dmux0_implment)
+# Loading work.mux1(mux1_implment)
+# Loading work.registerfile(rf)
+# Loading work.decoder_regfile(mymodel)
+# Loading work.reg_regfile(a_my_ndff)
+# Loading work.mux8x1_regfile(arch)
+#  Warning Design size of 14690 statements or 116 leaf instances exceeds ModelSim PE Student Edition recommended capacity.
+# Expect performance to be quite adversely affected.
+#  Warning (vsim-8683) Uninitialized out port cpufmwwbInstr_WB1(2 downto 0) has no driver.
+# 
+# This port will contribute value (3'hX) to the signal network.
+#  Warning (vsim-8683) Uninitialized out port cpufmwwbInstr_WB2(2 downto 0) has no driver.
+# 
+# This port will contribute value (3'hX) to the signal network.
+#  Warning (vsim-8683) Uninitialized out port cpufmwpf0cout has no driver.
+# 
+# This port will contribute value (U) to the signal network.
+#  Warning (vsim-8683) Uninitialized out port cpufmwpf1cout has no driver.
+# 
+# This port will contribute value (U) to the signal network.
+add wave simcpu
+force -freeze simcpuclk 1 0, 0 {50 ns} -r 100
+force -freeze simcpurst 1 0
+mem load -filltype value -filldata 1000 -fillradix hexadecimal cpufmwmram_callRamData(0)
+mem load -filltype value -filldata 1800 -fillradix hexadecimal cpufmwmram_callRamData(21)
+run
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 0 ns  Iteration 0  Instance cpuesmy_alu
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 0 ns  Iteration 0  Instance cpuesmy_alu
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 0 ns  Iteration 2  Instance cpuesmy_alu
+force -freeze simcpurst 0 0
+run
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+#  Warning There is an 'U''X''W''Z''-' in an arithmetic operand, the result will be 'X'(es).
+#    Time 100 ns  Iteration 2  Instance cpuCU
+run
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 250 ns  Iteration 0  Instance cpufmwmram_call
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 250 ns  Iteration 0  Instance cpufmwmram_call
+run
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 350 ns  Iteration 0  Instance cpufmwmram_call
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 350 ns  Iteration 0  Instance cpufmwmram_call
+run
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 450 ns  Iteration 0  Instance cpufmwmram_call
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 450 ns  Iteration 0  Instance cpufmwmram_call
+run
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 550 ns  Iteration 0  Instance cpufmwmram_call
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 550 ns  Iteration 0  Instance cpufmwmram_call
+force -freeze simcpurst 1 0
+mem load -filltype value -filldata 1800 -fillradix hexadecimal cpufmwmram_callRamData(0)
+run
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 650 ns  Iteration 0  Instance cpufmwmram_call
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 650 ns  Iteration 0  Instance cpufmwmram_call
+force -freeze simcpurst 0 0
+run
+force -freeze simcpurst 1 0
+mem load -filltype value -filldata {5000 } -fillradix hexadecimal cpufmwmram_callRamData(0)
+force -freeze simcpuregA_s 16'h0001 0
+force -freeze simcpuregB_s 16'h0002 0
+run
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 800 ns  Iteration 10  Instance cpuesmy_alu
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 800 ns  Iteration 11  Instance cpuesmy_alu
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 850 ns  Iteration 0  Instance cpufmwmram_call
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 850 ns  Iteration 0  Instance cpufmwmram_call
+force -freeze simcpurst 0 0
+run
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 900 ns  Iteration 6  Instance cpuesmy_alu
+force -freeze simcpurst 1 0
+mem load -filltype value -filldata A000 -fillradix hexadecimal cpufmwmram_callRamData(0)
+run
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 1 us  Iteration 11  Instance cpuesmy_alu
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 1050 ns  Iteration 0  Instance cpufmwmram_call
+#  Warning NUMERIC_STD.TO_INTEGER metavalue detected, returning 0
+#    Time 1050 ns  Iteration 0  Instance cpufmwmram_call
+force -freeze simcpurst 0 0
+run
+#  Warning NUMERIC_STD. metavalue detected, returning FALSE
+#    Time 1100 ns  Iteration 6  Instance cpuesmy_alu
+run

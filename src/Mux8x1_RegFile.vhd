@@ -18,5 +18,5 @@ with s select
             A6 when "101",
             A7 when "110",
             A8 when "111",
-            x"ffff" when others;
+            x"0000" when others;
  end architecture arch;

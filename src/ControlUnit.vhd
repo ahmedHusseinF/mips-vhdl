@@ -33,10 +33,34 @@ architecture Control_Unit1 of Control_Unit is
 begin
 
 
-process (OpCode)
+process (OpCode, RST)
 begin
 
 	-- intialize all as if it were a NOP inst.
+if(RST='1') then
+	Sig_1 <="00";
+Sig_2 <='0';
+Sig_3  <='0';
+Sig_4  <='0';
+Sig_5  <='0' ;
+Sig_6  <="11";
+Sig_7  <="0000";
+Sig_8  <="10";
+Sig_9  <='0';
+Sig_10 <="00";
+Sig_11 <='0' ;
+Sig_12 <="000";
+Sig_13 <='0';
+Sig_14 <='0';
+Sig_15 <='0';
+Sig_16 <='0';
+Sig_17 <="10";
+Sig_18 <='0';
+Sig_19 <='0';
+Sig_20 <='0';
+Sig_21 <="00";
+
+else
 
 Sig_1 <="00";
 Sig_2 <='0';
@@ -288,6 +312,7 @@ Sig_21 <="00";
 	else -- NOP its deafult as we assumed from first intialization.
 		
 	END IF;
+	end if;
 
 if(Bubble='1')
 then
