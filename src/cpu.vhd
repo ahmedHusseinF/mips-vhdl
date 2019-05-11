@@ -219,6 +219,7 @@ signal EX_MEM_OUT: std_logic_vector(130 downto 0);
 --Intermediate signals
 signal pc_decode: std_logic_vector(31 downto 0);
 signal Instr_decode: std_logic_vector(31 downto 0);
+
 signal s7_ex: std_logic_vector(3 downto 0);
 signal s9_ex: std_logic;
 signal s10_ex: std_logic_vector(1 downto 0);
@@ -232,6 +233,8 @@ signal opA_ex: std_logic_vector(2 downto 0);
 signal opB_ex: std_logic_vector(2 downto 0);
 signal opA_ex_out: std_logic_vector(2 downto 0);
 signal opB_ex_out: std_logic_vector(2 downto 0);
+signal s1_ex: std_logic_vector(1 downto 0);
+signal s13_ex: std_logic;
 signal s1_mem_wb_fetch: std_logic_vector(1 downto 0);
 signal s2_mem_wb_fetch: std_logic;
 signal s3_mem_wb_fetch: std_logic;
@@ -265,9 +268,7 @@ begin
 process(rst, clk)
 begin
 if rst = '1' then
-	IF_ID_IN <= (others => '0');
-	ID_EX_IN <= (others => '0');
-	EX_MEM_IN <= (others => '0');
+
 	
 	
 else
@@ -283,9 +284,13 @@ Instr_decode <= IF_ID_OUT(31 downto 0);
 ea_20 <= Instr_decode(4 downto 0)&Instr_decode(31 downto 17);
 ID_EX_IN <= s1&s2&s3&s4&s5&s6&s7&s8&s9&s10&s11&s12&s13&s14&s15&s16&s17&s18&s19&s20&s21&regA_s&regB_s&(Instr_decode(31 downto 16))&ea_20&pc_decode&(Instr_decode(10 downto 5));
 --Stage output signals
+
+s1_ex <= ID_EX_OUT(137 downto 136);
 s7_ex <= ID_EX_OUT(129 downto 126);
 s9_ex <= ID_EX_OUT(123);
 s10_ex <= ID_EX_OUT(122 downto 121);
+s13_ex <= ID_EX_OUT(116);
+
 regA_ex <= ID_EX_OUT(105 downto 90);
 regB_ex <= ID_EX_OUT(89 downto 74);
 Imm_execute <= ID_EX_OUT(73 downto 58);
@@ -299,7 +304,7 @@ opB_ex <= ID_EX_OUT(2 downto 0);
 
 --EX/MEM
 
-EX_MEM_IN <= ea_ex&s1&s2&s3&s4&s5&s6&s8&s11&s12&s13&s14&s15&s16&s17&s18&s19&s20&s21&ALUResult_s&ALUMul_s&pc_execute_out&opA_ex_out&opB_ex_out;
+EX_MEM_IN <= ea_ex&s1_ex&s2&s3&s4&s5&s6&s8&s11&s12&s13_ex&s14&s15&s16&s17&s18&s19&s20&s21&ALUResult_s&ALUMul_s&pc_execute_out&opA_ex_out&opB_ex_out;
 --Stage output signals
 
 ea_mem <= EX_MEM_OUT(130 downto 111);  

@@ -211,19 +211,19 @@ m: memory_stage port map(
 );
 
 wb: wb_stage port map (
-	alu_result_in => ALUResult_wb,
-	mul_result_in =>ALUMul_wb ,
+	alu_result_in => memory_wb_alu,
+	mul_result_in =>memory_wb_mul,
 	----
-	instr_26_24_in => Instr_wb_1,
-	instr_23_21_in => Instr_wb_2,
+	instr_26_24_in => instr_26_24_mem_wb,
+	instr_23_21_in => instr_23_21_mem_wb,
 	----
-	mem_data_in => mem_data_wb_out,
+	mem_data_in => mem_wb_data,
 	----
 	INPort => INPort,
 	----
-	signal_1 => signal_1,
-	signal_8 => signal_8,
-	signal_19 => signal_19,
+	signal_1 => s1_wb,
+	signal_8 => s8_wb,
+	signal_19 => s19_wb,
 	WriteData => WriteData,
 	WritePC2 => W_PC2,
 	Rdst => Rdst,
@@ -263,7 +263,7 @@ s11_wb <= MEM_WB_OUT(88);
 s13_wb <= MEM_WB_OUT(87);
 s20_wb <= MEM_WB_OUT(86);
 mem_data_wb_out <= MEM_WB_OUT(85 downto 54);
-ALUResult_wb <= MEM_WB_OUT(53 downto 38);
+ALUResult_wb <= memory_wb_alu;
 ALUMul_wb <= MEM_WB_OUT(37 downto 6);
 Instr_wb_1 <= MEM_WB_OUT(5 downto 3); 
 Instr_wb_2 <= MEM_WB_OUT(2 downto 0);
