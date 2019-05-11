@@ -6,7 +6,8 @@ library ieee;
 entity memory_stage is
   generic (reg_width: Integer := 16;address_line: Integer := 20; ram_width: Integer := 16);
   port (
-    clk: in std_logic;
+		clk: in std_logic;
+		rst: in std_logic;
 	----
     ea_reg: in std_logic_vector(address_line-1 downto 0);
     pc_reg_ex: in std_logic_vector(32-1 downto 0);
@@ -55,10 +56,12 @@ begin
 	                                    data_in => data_in_internal,
 	                                    data_out => data_out_internal
 									);
-
-	process (clk)
+									mem_data_out <= data_out_internal;
+	process (clk, rst)
 	begin
-
+		if(rst = '1') then
+			ram_address <= "00000000000000000000";
+		else
 		if rising_edge(clk) then
 			----
 			if signal_6 = "00" then
@@ -78,7 +81,7 @@ begin
 			else
 					data_in_internal <= "0000000000000000"&alu_result_in;
 			end if;
-			mem_data_out <= data_out_internal; -- to output
+			 -- to output
 			----
 			instr_26_24_out <= instr_26_24_in;
 			instr_23_21_out <= instr_23_21_in;
@@ -91,7 +94,7 @@ begin
 			alu_result_out <= alu_result_in;
 			mul_result_out <= mul_result_in;
 		end if;
-
+		end if;
 	end process;
 
 

@@ -1,0 +1,103 @@
+onerror {resume}
+#  Warning: onerror command for use within macro
+quietly WaveActivateNextPane {} 0
+add wave -noupdate /cpu/clk
+add wave -noupdate /cpu/rst
+add wave -noupdate /cpu/Int
+add wave -noupdate /cpu/INPort
+add wave -noupdate /cpu/OutPort
+add wave -noupdate /cpu/instrSig
+add wave -noupdate /cpu/first_op_wb
+add wave -noupdate /cpu/second_op_wb
+add wave -noupdate /cpu/data_wb
+add wave -noupdate /cpu/pc_fetch
+add wave -noupdate /cpu/regA_s
+add wave -noupdate /cpu/regB_s
+add wave -noupdate /cpu/ALUResult_mem_s
+add wave -noupdate /cpu/ALUResult_wb_s
+add wave -noupdate /cpu/ALUResult_s
+add wave -noupdate /cpu/ALUMul_s
+add wave -noupdate /cpu/zeroF_s
+add wave -noupdate /cpu/negativeF_s
+add wave -noupdate /cpu/carryF_s
+add wave -noupdate /cpu/writePC1_s
+add wave -noupdate /cpu/ID_EX_Rsrc_s
+add wave -noupdate /cpu/ID_EX_Rdst_s
+add wave -noupdate /cpu/wb_rdst
+add wave -noupdate /cpu/ex_mem_rdst_s
+add wave -noupdate /cpu/writePC1_32
+add wave -noupdate /cpu/ea_20
+add wave -noupdate /cpu/IF_ID_IN
+add wave -noupdate /cpu/IF_ID_OUT
+add wave -noupdate /cpu/ID_EX_IN
+add wave -noupdate /cpu/ID_EX_OUT
+add wave -noupdate /cpu/EX_MEM_IN
+add wave -noupdate /cpu/EX_MEM_OUT
+add wave -noupdate /cpu/pc_decode
+add wave -noupdate /cpu/Instr_decode
+add wave -noupdate /cpu/s7_ex
+add wave -noupdate /cpu/s9_ex
+add wave -noupdate /cpu/s10_ex
+add wave -noupdate /cpu/regA_ex
+add wave -noupdate /cpu/regB_ex
+add wave -noupdate /cpu/Imm_execute
+add wave -noupdate /cpu/ea_ex
+add wave -noupdate /cpu/pc_execute
+add wave -noupdate /cpu/pc_execute_out
+add wave -noupdate /cpu/opA_ex
+add wave -noupdate /cpu/opB_ex
+add wave -noupdate /cpu/opA_ex_out
+add wave -noupdate /cpu/opB_ex_out
+add wave -noupdate /cpu/ALUResult_MEM
+add wave -noupdate /cpu/ALUMUL_MEM
+add wave -noupdate /cpu/pc_memory
+add wave -noupdate /cpu/opA_mem
+add wave -noupdate /cpu/opB_mem
+add wave -noupdate /cpu/ea_mem
+TreeUpdate [SetDefaultTree]
+WaveRestoreCursors {{Cursor 1} {533 ns} 0}
+quietly wave cursor active 1
+configure wave -namecolwidth 150
+configure wave -valuecolwidth 265
+configure wave -justifyvalue left
+configure wave -signalnamewidth 0
+configure wave -snapdistance 10
+configure wave -datasetprefix 0
+configure wave -rowmargin 4
+configure wave -childrowmargin 2
+configure wave -gridoffset 0
+configure wave -gridperiod 1
+configure wave -griddelta 40
+configure wave -timeline 0
+configure wave -timelineunits ns
+update
+WaveRestoreZoom {0 ns} {1370 ns}
+mem load -filltype value -filldata 0800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(0)
+mem load -filltype value -filldata 1800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(1)
+mem load -filltype value -filldata 2000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(2)
+mem load -filltype value -filldata 2800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(3)
+mem load -filltype value -filldata 3000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(4)
+mem load -filltype value -filldata 3800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(5)
+mem load -filltype value -filldata 0800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(6)
+mem load -filltype value -filldata 1800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(7)
+mem load -filltype value -filldata 2000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(8)
+mem load -filltype value -filldata 2800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(9)
+mem load -filltype value -filldata 3000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(10)
+mem load -filltype value -filldata 3800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(11)
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+# 
+#           File in use by: Xyntechs  Hostname: DESKTOP-7AOOAH0  ProcessID: 26256
+# 
+#           Attempting to use alternate WLF file "./wlft4586k2".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+# 
+#           Using alternate file: ./wlft4586k2
+# 
+add wave -position insertpoint  \
+sim:/cpu/regFile/WriteRegAdd1 \
+sim:/cpu/regFile/WriteRegAdd2 \
+sim:/cpu/regFile/WriteRegData_32
+add wave -position insertpoint  \
+sim:/cpu/regFile/sig_11
+add wave -position insertpoint  \
+sim:/cpu/fmw/mem_data_wb_out

@@ -61,7 +61,8 @@ Architecture fmw_Implment of fetch_memory_wb is
 component memory_stage is
   generic (reg_width: Integer := 16;address_line: Integer := 20; ram_width: Integer := 16);
   port (
-    clk: in std_logic;
+		clk: in std_logic;
+		rst: in std_logic;
 	----
     ea_reg: in std_logic_vector(address_line-1 downto 0);
     pc_reg_ex: in std_logic_vector(32-1 downto 0);
@@ -180,6 +181,7 @@ begin
 	Instr_WB2_out <= Instr_wb_reg_2;
 m: memory_stage port map(
 	clk => clk,
+	rst => rst,
 	----
     	ea_reg => ea_reg,
     	pc_reg_ex => pc_reg_ex,
@@ -253,7 +255,6 @@ sp1: sp port map (
 
 
 --MEM/WB
-MEM_WB_IN <= signal_1&signal_8&signal_19&s11_mem_wb_fetch&s13_mem_wb_fetch&s20_mem_wb_fetch&mem_wb_data&memory_wb_alu&memory_wb_mul&instr_26_24_mem_wb&instr_23_21_mem_wb;
 --stage output signals
 s1_wb <= MEM_WB_OUT(93 downto 92);
 s8_wb <= MEM_WB_OUT(91 downto 90);
@@ -279,8 +280,15 @@ Instr_wb_2 <= MEM_WB_OUT(2 downto 0);
 		);
 
 
-process(clk)
+process(clk, rst)
 begin
+if rst ='1' then
+	MEM_WB_IN <= (others => '0');
+else
+MEM_WB_IN <= signal_1&signal_8&signal_19&s11_mem_wb_fetch&s13_mem_wb_fetch&s20_mem_wb_fetch&mem_wb_data&memory_wb_alu&memory_wb_mul&instr_26_24_mem_wb&instr_23_21_mem_wb;
+end if;
+
+
 if rising_edge(clk) then
 	if(s15_mem_wb_fetch='1') then
 	sp_s15 <= s15_mem_wb_fetch;

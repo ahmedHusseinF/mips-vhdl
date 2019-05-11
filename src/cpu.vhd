@@ -100,6 +100,7 @@ component RegisterFile is
 component Control_Unit is 
 port
 (
+	clk: in std_logic;
  OpCode: in std_logic_vector(4 DOWNTO 0);
  INTR : in std_logic;
  RST: in std_logic;
@@ -267,6 +268,8 @@ if rst = '1' then
 	IF_ID_IN <= (others => '0');
 	ID_EX_IN <= (others => '0');
 	EX_MEM_IN <= (others => '0');
+	
+	
 else
 --IF/ID
 IF_ID_IN <= pc_fetch&InstrSig;
@@ -277,7 +280,7 @@ Instr_decode <= IF_ID_OUT(31 downto 0);
 -----------------------------------------------------------
 
 --ID/EX
-ea_20 <= Instr_decode(4 downto 0)&InstrSig(31 downto 17);
+ea_20 <= Instr_decode(4 downto 0)&Instr_decode(31 downto 17);
 ID_EX_IN <= s1&s2&s3&s4&s5&s6&s7&s8&s9&s10&s11&s12&s13&s14&s15&s16&s17&s18&s19&s20&s21&regA_s&regB_s&(Instr_decode(31 downto 16))&ea_20&pc_decode&(Instr_decode(10 downto 5));
 --Stage output signals
 s7_ex <= ID_EX_OUT(129 downto 126);
@@ -367,6 +370,7 @@ end process;
 --Control Unit
 CU: Control_Unit port map
 (
+	clk => clk,
  OpCode => Instr_decode(15 downto 11),
  INTR => Int,
  RST => rst,

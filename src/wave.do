@@ -48,9 +48,8 @@ configure wave -timeline 0
 configure wave -timelineunits ns
 update
 WaveRestoreZoom {0 ns} {704 ns}
-mem load -filltype value -filldata 0800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(0)
-mem load -filltype value -filldata 100 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(1)
-mem load -filltype value -filldata 1000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(1)
+mem load -filltype value -filldata FFFF-fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(0)
+mem load -filltype value -filldata 9000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(1)
 mem load -filltype value -filldata 1800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(2)
 mem load -filltype value -filldata 200 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(3)
 mem load -filltype value -filldata 2000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(3)
@@ -63,3 +62,4 @@ mem load -filltype value -filldata 5000 -fillradix hexadecimal /cpu/fmw/m/ram_ca
 mem load -filltype value -filldata 5800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(10)
 mem load -filltype value -filldata 6000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(11)
 mem load -filltype value -filldata 6800 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(12)
+mem load -filltype value -filldata 3000 -fillradix hexadecimal /cpu/fmw/m/ram_call/RamData(13)

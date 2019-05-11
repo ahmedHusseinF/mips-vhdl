@@ -30,3 +30,19 @@ Trace back: Bad sequence in.main_pane.memory.interior.cs.body.tree.lwchildsite.c
     ("after" script)
   <2:C:/Modeltech_pe_edu_10.4a/win32pe_edu/tk8.5/bgerror.tcl:92: ::tkerror {Bad sequence in.main_pane.memory.interior.cs.body.tree.lwchildsite.clipper.canvas.sfchildsite.tree, aborting query. (2)}
   <1:eval:1: ::tk::dialog::error::bgerror {Bad sequence in.main_pane.memory.interior.cs.body.tree.lwchildsite.clipper.canvas.sfchildsite.tree, aborting query. (2)}
+Fri May 10 22:46:20 CAT 2019
+Trace back: can't read "vsimPriv(.main_pane.wave.interior.cs.body.pw.wf:grid)": no such element in array
+    while executing
+"set grid $vsimPriv($winname:grid)"
+    (procedure "Wave::UpdateValueButtons" line 6)
+    invoked from within
+"Wave::UpdateValueButtons $winname $cursor_num $cursor_time $cursor_delta"
+    (procedure "Wave::PositionCursor" line 12)
+    invoked from within
+"Wave::PositionCursor $winname 0 $Now $vsimPriv(Iteration)"
+    (procedure "Wave::UpdateEndOfTimeCursor" line 6)
+    invoked from within
+"Wave::UpdateEndOfTimeCursor .main_pane.wave.interior.cs.body.pw.wf"
+    ("after" script)
+  <2:C:/Modeltech_pe_edu_10.4a/win32pe_edu/tk8.5/bgerror.tcl:92: ::tkerror {can't read "vsimPriv(.main_pane.wave.interior.cs.body.pw.wf:grid)": no such element in array}
+  <1:eval:1: ::tk::dialog::error::bgerror {can't read "vsimPriv(.main_pane.wave.interior.cs.body.pw.wf:grid)": no such element in array}
