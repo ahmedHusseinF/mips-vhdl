@@ -23,7 +23,10 @@ port
  Sig_17 : out std_logic_vector(1 DOWNTO 0);
  Sig_18,Sig_19,Sig_20:out std_logic ;
  Sig_21:out std_logic_vector (1 DOWNTO 0);
- Bubble: in std_logic
+ Bubble: in std_logic;
+zf: in std_logic;
+nf: in std_logic;
+cf: in std_logic
  );
  
 
@@ -231,20 +234,26 @@ Sig_21 <="00";
         elsif(OpCode="10000") then --PUSH
 		Sig_3<='1';
 		Sig_5<='1';
+		Sig_6 <= "00";
 		Sig_7<="1101";
 		Sig_8<="10";
 		Sig_10<="10";
-		 
+		Sig_15<= '1';
+		Sig_2<='0';
+		Sig_14 <= '0';
 
 	elsif(OpCode="10001") then --POP
 		 Sig_1<="01";
 		 Sig_4<='1';
-		 Sig_5<='1';
-		 Sig_7<="1101";
-		 Sig_8<="10";
-		 Sig_10<="10";
+		 
+		
+		 Sig_8<="00";
+		
 		 Sig_11<='1';
 	 	 Sig_15<='1';
+		 Sig_15<= '0';
+		 Sig_2<='1';
+                 Sig_14 <= '0';
 
 	elsif(OpCode="10010") then --LDM
  		 Sig_1<="10";
@@ -258,12 +267,12 @@ Sig_21 <="00";
 
         elsif(OpCode="10011") then --LDD 
 		 Sig_1<="01";		 
-		 Sig_3<='1';
-		 Sig_5<='1';
+		 Sig_4<='1';
 		 Sig_6<="01";
 	 	 Sig_10<="10";
 		 Sig_11<='1';
 		 Sig_17<="01";
+		Sig_8 <= "00";
 
 		 
 	elsif(OpCode="10100") then --STD
@@ -273,37 +282,43 @@ Sig_21 <="00";
 		 Sig_7<="1101";
 		 Sig_8<="10";
 		 Sig_10<="10";
+		Sig_11<='1';
                  Sig_17<="01";
 		 
 	elsif(OpCode="10101") then --JZ
 			
-		 Sig_2<='1';
+		
+                if (zf='1') then 
+                 Sig_2<='1';
 		 Sig_5<='1';
 		 Sig_8<="10";
-		 Sig_12<="001";
 		 Sig_21<="00";
+		Sig_12 <="001";
+                 end if;
 	 	 
 	elsif(OpCode="10110") then --JN
-		 Sig_2<='1';
+		if (nf='1') then
+                 Sig_2<='1';
 		 Sig_5<='1';
 		 Sig_8<="10";
-		 Sig_12<="001";
-		 Sig_21<="01";
-
+		 Sig_21<="01";		 Sig_12 <="001";
+                 end if;
 	elsif(OpCode="10111") then --JC
-		 Sig_2<='1';
+		if(cf='1') then
+                 Sig_2<='1';
 		 Sig_5<='1';
 		 Sig_8<="10";
-		 Sig_12<="001";
 		 Sig_21<="10";
+		 Sig_12 <="001";
+                 end if;
 
 	elsif(OpCode="11000") then --JMP
 
 		 Sig_2<='1';
 		 Sig_5<='1';
 		 Sig_8<="10";
-		 Sig_12<="001";
 		 Sig_21<="11";
+		Sig_12 <="001";
 
 	 --elsif(OpCode="11001") then --Call
 		 

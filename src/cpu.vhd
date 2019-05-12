@@ -100,7 +100,7 @@ component RegisterFile is
 component Control_Unit is 
 port
 (
-	clk: in std_logic;
+ clk: in std_logic;
  OpCode: in std_logic_vector(4 DOWNTO 0);
  INTR : in std_logic;
  RST: in std_logic;
@@ -117,7 +117,10 @@ port
  Sig_17 : out std_logic_vector(1 DOWNTO 0);
  Sig_18,Sig_19,Sig_20:out std_logic ;
  Sig_21:out std_logic_vector (1 DOWNTO 0);
- Bubble: in std_logic
+ Bubble: in std_logic;
+zf: in std_logic;
+nf: in std_logic;
+cf: in std_logic
  );
  
 
@@ -219,7 +222,24 @@ signal EX_MEM_OUT: std_logic_vector(130 downto 0);
 --Intermediate signals
 signal pc_decode: std_logic_vector(31 downto 0);
 signal Instr_decode: std_logic_vector(31 downto 0);
-
+---------------------
+signal s2_ex :std_logic;
+signal s3_ex :std_logic;
+signal s4_ex :std_logic;
+signal s5_ex :std_logic;
+signal s6_ex : std_logic_vector(1 downto 0);
+signal s8_ex :std_logic_vector(1 downto 0);
+signal s11_ex :std_logic;
+signal s12_ex :std_logic_vector(2 downto 0);
+signal s14_ex :std_logic;
+signal s15_ex :std_logic;
+signal s16_ex :std_logic;
+signal s17_ex :std_logic_vector(1 downto 0);
+signal s18_ex :std_logic;
+signal s19_ex :std_logic;
+signal s20_ex :std_logic;
+signal s21_ex :std_logic_vector(1 downto 0);
+----------------------
 signal s7_ex: std_logic_vector(3 downto 0);
 signal s9_ex: std_logic;
 signal s10_ex: std_logic_vector(1 downto 0);
@@ -264,32 +284,45 @@ signal s11_decode: std_logic;
 signal s20_decode: std_logic;
 
 begin
-
-process(rst, clk)
-begin
-if rst = '1' then
-
-	
-	
-else
---IF/ID
 IF_ID_IN <= pc_fetch&InstrSig;
---stage output signals
+--Stage output signals
 pc_decode <= IF_ID_OUT(63 downto 32);
 Instr_decode <= IF_ID_OUT(31 downto 0);
-
 -----------------------------------------------------------
 
 --ID/EX
 ea_20 <= Instr_decode(4 downto 0)&Instr_decode(31 downto 17);
 ID_EX_IN <= s1&s2&s3&s4&s5&s6&s7&s8&s9&s10&s11&s12&s13&s14&s15&s16&s17&s18&s19&s20&s21&regA_s&regB_s&(Instr_decode(31 downto 16))&ea_20&pc_decode&(Instr_decode(10 downto 5));
---Stage output signals
+
 
 s1_ex <= ID_EX_OUT(137 downto 136);
+
+s2_ex <= ID_EX_OUT(135);
+s3_ex <= ID_EX_OUT(134);
+s4_ex <= ID_EX_OUT(133);
+s5_ex <= ID_EX_OUT(132);
+s6_ex <= ID_EX_OUT(131 downto 130);
+
 s7_ex <= ID_EX_OUT(129 downto 126);
+
+s8_ex <= ID_EX_OUT(125 downto 124);
+
 s9_ex <= ID_EX_OUT(123);
 s10_ex <= ID_EX_OUT(122 downto 121);
+
+s11_ex <= ID_EX_OUT(120);
+s12_ex <= ID_EX_OUT(119 downto 117);
+
 s13_ex <= ID_EX_OUT(116);
+
+s14_ex <= ID_EX_OUT(115);
+s15_ex <= ID_EX_OUT(114);
+s16_ex <= ID_EX_OUT(113);
+s17_ex <= ID_EX_OUT(112 downto 111);
+s18_ex <= ID_EX_OUT(110);
+s19_ex <= ID_EX_OUT(109);
+s20_ex <= ID_EX_OUT(108);
+s21_ex <= ID_EX_OUT(107 downto 106);
 
 regA_ex <= ID_EX_OUT(105 downto 90);
 regB_ex <= ID_EX_OUT(89 downto 74);
@@ -298,16 +331,13 @@ ea_ex <= ID_EX_OUT(57 downto 38);
 pc_execute <= ID_EX_OUT(37 downto 6);
 opA_ex <= ID_EX_OUT(5 downto 3);
 opB_ex <= ID_EX_OUT(2 downto 0);
---control signals 32 + REGA 16 + REGB 16 + IMM 16 + EA 20 + PC 32 + opA 3 bits + opB 3 bits = 138 bits
-
----------------------------------------------------------------
 
 --EX/MEM
 
-EX_MEM_IN <= ea_ex&s1_ex&s2&s3&s4&s5&s6&s8&s11&s12&s13_ex&s14&s15&s16&s17&s18&s19&s20&s21&ALUResult_s&ALUMul_s&pc_execute_out&opA_ex_out&opB_ex_out;
+EX_MEM_IN <= ea_ex&s1_ex&s2_ex&s3_ex&s4_ex&s5_ex&s6_ex&s8_ex&s11_ex&s12_ex&s13_ex&s14_ex&s15_ex&s16_ex&s17_ex&s18_ex&s19_ex&s20_ex&s21_ex&ALUResult_s&ALUMul_s&pc_execute_out&opA_ex_out&opB_ex_out;
 --Stage output signals
 
-ea_mem <= EX_MEM_OUT(130 downto 111);  
+ea_mem <= EX_MEM_OUT(130 downto 111);
 s1_mem_wb_fetch <= EX_MEM_OUT(110 downto 109);  
 s2_mem_wb_fetch <= EX_MEM_OUT(108); 
 s3_mem_wb_fetch <= EX_MEM_OUT(107); 
@@ -332,7 +362,24 @@ ALUMUL_MEM <= EX_MEM_OUT(69 downto 38);
 pc_memory <= EX_MEM_OUT(37 downto 6);
 opA_mem <= EX_MEM_OUT(5 downto 3);
 opB_mem <= EX_MEM_OUT(2 downto 0);
+process(rst, clk)
+begin
+if rst = '1' then
 
+	
+	
+else
+--IF/ID
+
+--stage output signals
+
+
+--control signals 32 + REGA 16 + REGB 16 + IMM 16 + EA 20 + PC 32 + opA 3 bits + opB 3 bits = 138 bits
+
+---------------------------------------------------------------
+
+
+	
 
 --control signals 25 bits + ALUResult 16 bits + ALUMul 32 bits + PC 32 bits + opA 3 bits + opB 3 bits = 111 bits
 --------------------------------------------------------------------------------------------
@@ -400,7 +447,11 @@ CU: Control_Unit port map
  Sig_19 => s19,
  Sig_20 => s20,
  Sig_21 => s21,
- Bubble => '0'  --to be implmented
+ Bubble => '0',  --to be implmented
+ zf => zeroF_s,
+nf => negativeF_s,
+ cf => carryF_s
+ 
  );
 
 writePC1_32 <= "0000000000000000"&writePC1_s;
@@ -458,7 +509,7 @@ fmw : fetch_memory_wb port map(
 es: execute_stage port map (
     PC_in => pc_execute,
     regA => regA_ex,
-    regB => regA_ex,
+    regB => regB_ex,
     imm => Imm_execute,
     instr26_24_in => opA_ex,
     instr23_21_in => opB_ex,

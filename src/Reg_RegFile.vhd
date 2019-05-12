@@ -17,7 +17,7 @@ BEGIN
 IF Rst = '1' THEN
                  q <= (OTHERS=>'0');
 ELSIF 
-rising_edge(Clk)and we= '1' THEN
+rising_edge(clk) and we= '1' THEN
 		q <= d;
 END IF;
 END PROCESS;

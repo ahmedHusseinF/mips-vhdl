@@ -62,6 +62,8 @@ begin
 		if(rst = '1') then
 			ram_address <= "00000000000000000000";
 		else
+		instr_26_24_out <= instr_26_24_in;
+			instr_23_21_out <= instr_23_21_in;
 		if rising_edge(clk) then
 			----
 			if signal_6 = "00" then
@@ -83,8 +85,7 @@ begin
 			end if;
 			 -- to output
 			----
-			instr_26_24_out <= instr_26_24_in;
-			instr_23_21_out <= instr_23_21_in;
+			
 			if signal_18 = '0' then
 				ex_mem_rdst <= instr_26_24_in;
 			else
